@@ -1,0 +1,197 @@
+.el-main {
+    // width: 100%;
+    // height: 80%;
+    padding: 0;
+    // overflow: hidden;
+  }
+.el-header{
+  padding:0;
+}
+/**修改el-tab默认样式 */
+.el-tabs__item {
+    padding: 0 20px;
+    height: 40px;
+    box-sizing: border-box;
+    line-height: 40px;
+    display: inline-block;
+    list-style: none;
+    font-size: 20px;
+    font-weight: 500;
+    color: #303133;
+    position: relative;
+  }
+  .el-tabs__item.is-active {
+    color: #000000;
+  }
+  .el-tabs__active-bar {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    height: 2px;
+    background-color: #000000;
+    z-index: 1;
+    -webkit-transition: -webkit-transform 0.3s
+      cubic-bezier(0.645, 0.045, 0.355, 1);
+    transition: -webkit-transform 0.3s cubic-bezier(0.645, 0.045, 0.355, 1);
+    transition: transform 0.3s cubic-bezier(0.645, 0.045, 0.355, 1);
+    transition: transform 0.3s cubic-bezier(0.645, 0.045, 0.355, 1),
+      -webkit-transform 0.3s cubic-bezier(0.645, 0.045, 0.355, 1);
+    transition: transform 0.3s cubic-bezier(0.645, 0.045, 0.355, 1),
+      -webkit-transform 0.3s cubic-bezier(0.645, 0.045, 0.355, 1);
+    list-style: none;
+  }
+  
+  .el-collapse-item {
+    margin-bottom: 15px;
+  }
+  .el-collapse-item__header {
+    display: -webkit-box;
+    display: -ms-flexbox;
+    display: flex;
+    -webkit-box-align: center;
+    -ms-flex-align: center;
+    align-items: center;
+    height: 48px;
+    line-height: 48px;
+    background-color: #fff;
+    color: #303133;
+    cursor: pointer;
+    border-bottom: 1px solid #ebeef5;
+    font-size: 18px;
+    padding-left: 10px;
+    box-sizing: border-box;
+    font-weight: 500;
+    -webkit-transition: border-bottom-color 0.3s;
+    transition: border-bottom-color 0.3s;
+    outline: 0;
+  }
+  .el-collapse {
+    border-top: none;
+    border-bottom: none;
+  }
+  .el-collapse-item__wrap {
+    will-change: height;
+    background-color: #fff;
+    overflow: hidden;
+    -webkit-box-sizing: border-box;
+    box-sizing: border-box;
+    border-bottom: none;
+    
+  }
+  
+  .el-input__inner {
+    // background-color: #fff;
+    // background-image: none;
+    // border-radius: 4px;
+    // border: 1px solid #dcdfe6;
+    // color: #606266;
+    height: 50px;
+    // padding: 0 15px;
+    // width: 100%;
+  }
+
+  .el-form-item__label {
+    
+    color:ivory;
+    font-size:18px;
+    
+}
+
+.el-form-item__error {
+    // color: #F56C6C;
+    // font-size: 14px;
+    // line-height: 1;
+    padding-top: 7px;
+    padding-left: 2px;
+    // position: absolute;
+    // top: 100%;
+    // left: 0;
+    
+}
+//设置每个表单项的间距
+.el-form-item {
+  margin-bottom: 30px;
+}
+.my-form{
+  width:300px;
+}
+
+
+.el-card__body
+{
+  
+  .flex.el-form-item{
+    
+      margin-bottom:10px !important;
+      // padding-top:5px !important;
+    
+      .el-form-item__content{
+        // position: relative;
+        margin-left:0 !important;
+        // text-align:center;
+        .button-reset{
+          // position:absolute;
+          // right:0
+        }
+        
+      }
+    
+    
+  }
+  
+}
+
+//修改输入框的placeholder字体样式
+::-webkit-input-placeholder { /* WebKit, Blink, Edge */
+  color: #757575 !important;
+  font-size:15px;
+  font-weight: bolder !important;
+}
+
+
+
+//空格是子孙选择器，>是子选择器
+// .el-card__body .myItem>div
+// {
+//   //去除item的左边距
+//       margin-left:0 !important  
+// }
+
+//根据class设置不同表单项的间距
+// .com-container{
+//   .card-login{
+//     .el-form-item {
+//       margin-bottom: 30px;
+//     }
+//   }
+//  .card-regist{
+//     .el-form-item {
+//       margin-bottom: 40px;
+//     }
+//   }
+// }
+
+
+// .button-line{
+//   margin-bottom:0 !important
+// }
+.cardstyle{
+  /* width: 400px; */
+  /* margin-left: calc(calc(100-vw-400px) / 2); */
+  border-radius: 20px !important; 
+  /* border-color: rgba(30, 77, 102, 1); */
+  border: 0 ;
+  /* background-color: rgba(200, 200, 200, 1); */
+  background: -webkit-linear-gradient(
+    bottom,
+    rgba(12, 38, 51, 0.6),
+    rgba(30, 77, 102, 0.6)
+  ) !important;
+  color: ivory;
+  /* height: 400px; */
+}
+
+.el-dropdown-menu span:hover{
+  //去除下拉菜单第一个昵称的高亮效果
+  background-color: white !important;
+}

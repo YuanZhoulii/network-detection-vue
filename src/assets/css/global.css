@@ -1,0 +1,55 @@
+html,
+body,
+#app {
+  width: 100%;
+  height: 100%;
+  padding: 0;
+  margin: 0;
+  overflow: hidden;
+  font-weight: bold;
+  box-sizing: border-box;
+  font-family: 'Helvetica Neue', Helvetica, 'PingFang SC', 'Hiragino Sans GB', 'Microsoft YaHei', '微软雅黑', Arial, sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+/*定位水平垂直居中*/
+.center {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  text-align: center;
+}
+/*弹性布局水平垂直居中*/
+.flex {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  align-content: center;
+}
+.com-page,
+.com-container,
+.com-chart {
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+}
+canvas {
+  border-radius: 20px;
+}
+.el-row-100 {
+  width: 100% ;
+  padding: 0;
+  margin: 0;
+  height: 100%;
+}
+.title {
+  font-size: 50px;
+  margin-bottom: 50px;
+  color: black;
+}
+.form-title {
+  font-size: 30px;
+  text-align: center;
+  margin-bottom: 30px;
+}
