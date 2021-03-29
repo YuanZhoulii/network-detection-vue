@@ -1,6 +1,6 @@
 <!--  -->
 <template>
-  <div v-text="ss"></div>
+  <div v-text="ss">ss</div>
 </template>
 
 <script>
