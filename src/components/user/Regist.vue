@@ -98,7 +98,7 @@ export default {
     }
     var checkAccount = (rule, value, callback) => {
       if (!/^[a-zA-Z][a-zA-Z0-9_]{4,15}$/.test(value)) {
-        callback(new Error('账号以字母开头，包含字母数字下划线'))
+        callback(new Error('账号以字母开头，可包含字母数字下划线'))
       } else {
         callback()
       }

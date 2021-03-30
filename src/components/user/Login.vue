@@ -143,8 +143,9 @@ export default {
       //按钮显示加载中动画
       this.isSubmitLoading = true
       console.log('loginrequest :>> ')
+      let data = {}
       try {
-        const { data } = await this.$http.post(
+        data = await this.$http.post(
           'auth/login',
           this.$http.adornData(this.ruleForm, false)
         )
@@ -152,7 +153,7 @@ export default {
         this.showErrMsg('登录失败，无法连接服务器')
         this.isSubmitLoading = false
       }
-
+      data = data.data
       let type = data.code === 0 ? 'success' : 'error'
 
       this.showMsg(data.msg, type)
