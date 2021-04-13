@@ -2,6 +2,7 @@
 import Vue from 'vue'
 import VueRouter from 'vue-router'
 import store from '@/store';
+import http from '@/utils/http';
 
 //解决重复路由跳转报错
 //https://blog.csdn.net/weixin_43242112/article/details/107595460
@@ -17,7 +18,7 @@ Vue.use(VueRouter)
 const Login = () => import('@/components/user/Login')
 const Regist = () => import('@/components/user/Regist')
 const Info = () => import('@/components/user/Info')
-const ScreenPage = () => import('@/views/screen-page')
+const ScreenPage = () => import('@/components/visual/screen-page')
 
 
 
@@ -123,57 +124,68 @@ const router = new VueRouter({
   // mode: 'history'
 })
 
-//路由前置守卫
-router.beforeEach((to, from, next) => {
-  console.log("router.beforeEach");
+async function getLoginUser(to, from, next) {
+
+}
+
+// //路由前置守卫
+router.beforeEach(async (to, from, next) => {
+
+
   //从from跳转到to
   // console.log('to.meta.auth :>> ', to.meta.auth);
   // console.log('to,from :>> ', to, from);
   // console.log('to.matched :>> ', to.matched);
-  //要路由的组件需要登录状态时
-  let user = store.state.user
-  if (to.meta.auth === true) {
-    console.log("auth true");
-    user ? next() : next('/login')
-  } else {
-    console.log("auth false");
-    user ? next('/screen') : next()
+
+  //从登录页到可视化页不需要再请求用户登录状态了
+  if (store.state.loginToScreen === true) {
+    store.commit('isLoginToScreen', false)
+    next()
+    return;
   }
-  // next()
+  if (store.state.isLogOut === true) {
+    store.commit('updateLogOut', false)
+    next()
+    return;
+  }
+  let data = {}
   //获取登录状态
-  // try {
-  //   const { data } = await http.get('auth/current')
-  // } catch (error) {
-  //   next()
-  // }
+  try {
+    data = await http.get('auth/current')
+    data = data.data
 
-  // if (data.code === 0) {
-  //   //保存用户信息
-  //   store.commit('initUser', data.data)
-  //   if (to.meta.auth === true) {
-  //     next()
-  //   } else {
-  //     //已登录跳转到可视化页面
-  //     next('/screen')
-  //   }
-  // } else {
-  //   //清空用户信息
-  //   store.commit('clearUser')
-  //   if (to.meta.auth === true) {
-  //     //未登录回到登录页面
-  //     next('/login')
-  //   } else {
-  //     next()
-  //   }
-  // }
+    if (data.code === 0) {
+      //保存用户信息
+      store.commit('initUser', data.data)
 
+      if (to.meta.auth === true) {
 
+        next()
+      } else {
+        //已登录跳转到可视化页面
+        next('/screen')
+      }
+    } else {
+      //清空用户信息
+      store.commit('clearUser')
+      if (to.meta.auth === true) {
+        //未登录回到登录页面
+        next('/login')
+      } else {
+        next()
+      }
+    }
+  } catch (error) {
+    //请求失败跳转到登录页
+    next('/login')
+  }
 })
 
-//路由后置钩子
-router.afterEach((to, from) => {
 
-})
+// //路由后置钩子
+// router.afterEach((to, from) => {
+
+// })
 
 
 

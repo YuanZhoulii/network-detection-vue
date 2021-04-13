@@ -1,12 +1,17 @@
 <template>
   <div id="app">
+    <!--背景视频-->
     <my-bg></my-bg>
+    <!--布局容器-->
     <el-container class="com-container">
       <el-header class="com-header">
+        <!--顶部导航栏-->
         <my-header></my-header>
       </el-header>
       <el-main class="com-main">
+        <!--缓存组件，只创建一次组件，之后不再创建-->
         <keep-alive>
+          <!--内容区域，根据当前路由动态切换-->
           <router-view />
         </keep-alive>
       </el-main>
@@ -15,58 +20,15 @@
 </template>
 
 <script>
+//导入vuex操作函数和顶部导航栏组件、背景视频组件
 import Header from './components/common/header'
 import BackGround from './components/common/background'
-import { mapState } from 'vuex'
-import { mapMutations } from 'vuex'
 export default {
   name: 'App',
+  //注册导入的组件
   components: {
     'my-header': Header,
     'my-bg': BackGround,
-  },
-  data() {
-    return {}
-  },
-  computed: {
-    ...mapState(['user']),
-  },
-  methods: {
-    ...mapMutations(['initUser', 'clearUser']),
-    async getLoginUser() {
-      try {
-        const { data } = await this.$http.get('auth/current')
-      } catch (error) {
-        //请求服务器失败
-        this.showErrMsg('无法连接服务器')
-        //清空之前保存的用户信息
-        if (this.user) {
-          this.clearUser()
-        }
-        //回到登录页
-        this.$router.replace('/login')
-      }
-    },
-    showRouteMsg() {
-      if (!this.user && this.$route.meta.auth) {
-        this.showMsg('您尚未登录', 'warning')
-      }
-      if (this.user && !this.$route.meta.auth) {
-        this.showMsg('您已登录')
-      }
-    },
-  },
-
-  created() {
-    // this.showRouteMsg()
-  },
-
-  watch: {
-    $route(to, from) {
-      console.log('route change')
-      this.getLoginUser()
-      this.showRouteMsg()
-    },
   },
 }
 </script>
@@ -86,3 +48,5 @@ export default {
   width: 100%;
 }
 </style>
+
+ 

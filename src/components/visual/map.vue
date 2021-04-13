@@ -1,127 +1,202 @@
-<!-- 地图 -->
+<!-- 商家分布图表 -->
 <template>
-  <div id="visual-map" ref="visual-map"></div>
+  <div class="com-container">
+    <div class="com-chart" ref="map_ref"></div>
+  </div>
 </template>
 
 <script>
-// 这里可以导入其他文件（比如：组件，工具js，第三方插件js，json文件，图片文件等等）
-// 例如：import 《组件名称》 from '《组件路径》';
-import axios from 'axios'
+// import axios from 'axios'
+
 export default {
-  // import引入的组件需要注入到对象中才能使用
-  components: {},
   data() {
-    // 这里存放数据
     return {
+      chartInstance: null,
+      allData: null,
       myData: [
-        { name: '北京', value: 39.92 },
-        { name: '天津', value: 39.13 },
-        { name: '上海', value: 31.22 },
-        { name: '重庆', value: 66 },
-        { name: '河北', value: 147 },
-        { name: '河南', value: 113 },
-        { name: '云南', value: 25.04 },
-        { name: '辽宁', value: 50 },
-        { name: '黑龙江', value: 114 },
-        { name: '湖南', value: 175 },
-        { name: '安徽', value: 117 },
-        { name: '山东', value: 92 },
-        { name: '新疆', value: 84 },
-        { name: '江苏', value: 67 },
-        { name: '浙江', value: 84 },
-        { name: '江西', value: 96 },
-        { name: '湖北', value: 273 },
-        { name: '广西', value: 59 },
-        { name: '甘肃', value: 99 },
-        { name: '山西', value: 39 },
-        { name: '内蒙古', value: 58 },
-        { name: '陕西', value: 61 },
-        { name: '吉林', value: 51 },
-        { name: '福建', value: 29 },
-        { name: '贵州', value: 71 },
-        { name: '广东', value: 38 },
-        { name: '青海', value: 57 },
-        { name: '西藏', value: 24 },
-        { name: '四川', value: 58 },
-        { name: '宁夏', value: 52 },
-        { name: '海南', value: 54 },
-        { name: '台湾', value: 88 },
-        { name: '香港', value: 66 },
-        { name: '澳门', value: 77 },
-        { name: '南海诸岛', value: 55 },
+        { name: '北京', value: 0 },
+        { name: '天津', value: 0 },
+        { name: '上海', value: 0 },
+        { name: '重庆', value: 0 },
+        { name: '河北', value: 0 },
+        { name: '河南', value: 0 },
+        { name: '云南', value: 0 },
+        { name: '辽宁', value: 0 },
+        { name: '黑龙江', value: 0 },
+        { name: '湖南', value: 0 },
+        { name: '安徽', value: 0 },
+        { name: '山东', value: 0 },
+        { name: '新疆', value: 0 },
+        { name: '江苏', value: 0 },
+        { name: '浙江', value: 0 },
+        { name: '江西', value: 0 },
+        { name: '湖北', value: 0 },
+        { name: '广西', value: 0 },
+        { name: '甘肃', value: 0 },
+        { name: '山西', value: 0 },
+        { name: '内蒙古', value: 0 },
+        { name: '陕西', value: 0 },
+        { name: '吉林', value: 0 },
+        { name: '福建', value: 0 },
+        { name: '贵州', value: 0 },
+        { name: '广东', value: 0 },
+        { name: '青海', value: 0 },
+        { name: '西藏', value: 0 },
+        { name: '四川', value: 0 },
+        { name: '宁夏', value: 0 },
+        { name: '海南', value: 0 },
+        { name: '台湾', value: 0 },
+        { name: '香港', value: 0 },
+        { name: '澳门', value: 0 },
+        { name: '南海诸岛', value: 0 },
       ],
     }
   },
-  // 监听属性 类似于data概念
+  mounted() {
+    this.initChart()
+    // this.getData()
+    window.addEventListener('resize', this.screenAdapter)
+    this.screenAdapter()
+  },
+  destroyed() {
+    window.removeEventListener('resize', this.screenAdapter)
+  },
   computed: {
     mapOption() {
-      let option = {
-        geo: {
-          type: 'map',
-          map: 'chinaMap', // chinaMap需要和registerMap中的第一个参数保持一致
-          roam: false, // 设置允许缩放以及拖动的效果
-          label: {
-            show: true, // 展示标签
+      if (this.allData) {
+        console.error(this.allData)
+        //将数组排序，得到最大值和最小值
+        let sortData = this.allData.sort((a, b) => b.value - a.value)
+        let max = sortData[0].value
+        let min = sortData[sortData.length - 1].value
+        // console.log('max,min :>> ', max, min)
+        let option = {
+          title: {
+            text: '▎ 全国主机数量分布',
+            left: 10,
+            top: 10,
+          },
+          tooltip: {
+            trigger: 'item',
+            formatter: (arg) => {
+              console.error(arg)
+              // let v
+              // if (isNaN(arg.value)) {
+              //   v = 0
+              // } else {
+              //   v = arg.value
+              // }
+
+              return arg.name + '：' + arg.value
+            },
+          },
+          geo: {
+            type: 'map',
+            map: 'china', // chinaMap需要和registerMap中的第一个参数保持一致
+            roam: false, // 设置允许缩放以及拖动的效果
+            top: '5%',
+            bottom: '5%',
+
+            label: {
+              show: true, // 展示标签
+              align: 'left',
+              verticalAlign: 'top',
+              color: 'black',
+              fontWeight: 'bold',
+            },
+            itemStyle: {
+              areaColor: '#2E72BF',
+              borderColor: '#333',
+            },
+          },
+          series: [
+            {
+              data: this.allData,
+              geoIndex: 0, // 将数据和第0个geo配置关联在一起
+              type: 'map',
+            },
+          ],
+          visualMap: {
+            min: min,
+            max: max,
+            text: ['High', 'Low'],
+            left: '5%',
+            bottom: '5%',
+            inRange: {
+              color: ['white', '#2e72bf'], // 控制颜色渐变的范围
+            },
+            textStyle: {
+              color: 'white',
+              fontWeight: 'bold',
+            },
+            calculable: true, // 出现滑块
+          },
+        }
+        return option
+      }
+
+      return {}
+    },
+  },
+  methods: {
+    async initChart() {
+      this.chartInstance = this.$echarts.init(this.$refs.map_ref, 'chalk')
+      this.chartInstance.showLoading({
+        text: 'loading',
+        color: '#c23531',
+        textColor: '#000',
+        maskColor: 'rgba(255, 255, 255, 0.2)',
+        zlevel: 0,
+      })
+
+      this.getData()
+
+      // 获取中国地图的矢量数据
+      const ret = await this.$http.get('static/map/china.json')
+      // console.log('ret', ret)
+      this.$echarts.registerMap('china', ret.data)
+
+      this.chartInstance.setOption(this.mapOption)
+      this.$store.commit('updateLoading', { type: 'map', flag: true })
+    },
+    async getData() {
+      // 获取服务器的数据, 对this.myData进行赋值之后, 调用updateChart方法更新图表
+      const { data } = await this.$http.get('search/search/map')
+      // this.$store.commit('setAreaData', data.data)
+
+      this.allData = data.data
+      this.updateChart()
+      this.chartInstance.hideLoading()
+    },
+    updateChart() {
+      // console.log('myData', this.myData)
+      this.chartInstance.setOption(this.mapOption)
+    },
+    screenAdapter() {
+      const titleFontSize = (this.$refs.map_ref.offsetWidth / 100) * 3.6
+      const adapterOption = {
+        title: {
+          textStyle: {
+            fontSize: titleFontSize / 1.6,
           },
         },
-        series: [
-          {
-            data: this.myData,
-            geoIndex: 0, // 将数据和第0个geo配置关联在一起
-            type: 'map',
-          },
-        ],
         visualMap: {
-          min: 0,
-          max: 300,
-          text: ['High', 'Low'],
-          inRange: {
-            color: ['white', 'blue'], // 控制颜色渐变的范围
+          itemWidth: titleFontSize / 1.5,
+          itemHeight: titleFontSize * 3,
+        },
+        geo: {
+          label: {
+            // fontSize: titleFontSize / 2.8,
+            fontSize: titleFontSize / 2,
           },
-          calculable: true, // 出现滑块
         },
       }
-      return option
+      this.chartInstance.setOption(adapterOption)
+      this.chartInstance.resize()
     },
   },
-  // 监控data中的数据变化
-  watch: {},
-  // 方法集合
-  methods: {
-    myEcharts() {
-      var vm = this
-      // 基于准备好的dom，初始化echarts实例
-      //   var myChart = this.$echarts.init(document.getElementById('visual-map'))
-      var myChart = this.$echarts.init(vm.$refs['visual-map'],)
-
-      axios.get('static/json/china.json').then(({ data, status }) => {
-        // let { data,status } = res
-
-        if (status === 200) {
-          vm.$echarts.registerMap('chinaMap', data)
-          myChart.setOption(vm.mapOption)
-        }
-      })
-    },
-  },
-  // 生命周期 - 创建完成（可以访问当前this实例）
-  created() {},
-  // 生命周期 - 挂载完成（可以访问DOM元素）
-  mounted() {
-    this.myEcharts()
-  },
-  beforeCreate() {}, // 生命周期 - 创建之前
-  beforeMount() {}, // 生命周期 - 挂载之前
-  beforeUpdate() {}, // 生命周期 - 更新之前
-  updated() {}, // 生命周期 - 更新之后
-  beforeDestroy() {}, // 生命周期 - 销毁之前
-  destroyed() {}, // 生命周期 - 销毁完成
-  activated() {}, // 如果页面有keep-alive缓存功能，这个函数会触发
 }
 </script>
-<style scoped>
-#visual-map {
-  width: 720px;
-  height: 480px;
-}
+
+<style lang='less' scoped>
 </style>

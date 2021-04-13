@@ -17,7 +17,7 @@ export default {
             this.showMsg(msg, 'success')
         };
         Vue.prototype.showWarnMsg = function (msg) {
-            this.showMsg(msg, 'warn')
+            this.showMsg(msg, 'warning')
         };
     }
 }

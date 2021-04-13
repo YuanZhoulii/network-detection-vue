@@ -43,25 +43,11 @@ export default {
   // 监听属性 类似于data概念
   computed: {
     isShowVideo() {
-      let routes = [
-        'barpage',
-        'echarts',
-        'trendpage',
-        'mappage',
-        'rankpage',
-        'hotpage',
-        'screen',
-      ]
-
+      let routes = ['screen']
       //去除path中的第一个斜杠
       let path = this.$route.path.substr(1)
       let find = routes.includes(path)
-      let video = this.$refs.myvideo
-      if (find) {
-        return false
-      } else {
-        return true
-      }
+      return !find
     },
   },
   // 监控data中的数据变化

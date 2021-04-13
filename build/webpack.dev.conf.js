@@ -22,8 +22,8 @@ const devWebpackConfig = merge(baseWebpackConfig, {
 
   // these devServer options should be customized in /config/index.js
   devServer: {
-
-
+    //关闭host检查，可以用域名访问
+    disableHostCheck: true,
     //启动时以本机ip启动，而不是启动0.0.0.0
     useLocalIp: true,
     clientLogLevel: 'warning',

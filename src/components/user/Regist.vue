@@ -11,7 +11,11 @@
       >
         <div class="form-title">注册</div>
         <el-form-item prop="username">
-          <el-input v-model="ruleForm.username" placeholder="账号"></el-input>
+          <el-input
+            v-model="ruleForm.username"
+            ref="username_input"
+            placeholder="账号（长度5-16）"
+          ></el-input>
         </el-form-item>
 
         <el-form-item prop="password">
@@ -19,7 +23,7 @@
             type="password"
             v-model="ruleForm.password"
             autocomplete="off"
-            placeholder="密码"
+            placeholder="密码（长度8-16）"
             show-password
           ></el-input>
         </el-form-item>
@@ -180,6 +184,12 @@ export default {
     forceUpdate() {
       this.$forceUpdate()
     },
+  },
+  mounted() {
+    this.$refs['username_input'].focus()
+  },
+  deactivated() {
+    this.$refs['ruleForm'].resetFields()
   },
 }
 </script>

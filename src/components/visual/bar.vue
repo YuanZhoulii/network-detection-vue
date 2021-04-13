@@ -9,6 +9,7 @@
 export default {
   data() {
     return {
+      //图表实例引用
       chartInstance: null,
       barData: null, //服务器返回数据
       //一页只显示5条，需要进行分页
@@ -33,7 +34,7 @@ export default {
       })
       const initOption = {
         title: {
-          text: '▎ 全国TOP10',
+          text: '▎ 全国主机数量TOP10',
           //设置标题左边距和上边距
           left: 10,
           top: 10,
@@ -123,7 +124,7 @@ export default {
       //     this.barData = data.data
       //     this.updateChart()
       //   })
-      const { data } = await this.$http.get('visual/echarts/bar/top10')
+      const { data } = await this.$http.get('search/search/bar')
       // console.log('data', data)
       this.barData = data.data
       this.barData.sort((a, b) => {
@@ -134,6 +135,7 @@ export default {
         this.barData.length % 5 == 0
           ? this.barData.length / 5
           : this.barData.length / 5 + 1
+      this.$store.commit('updateLoading', { type: 'bar', flag: true })
       //根据获取到的服务器数据更新图表
       this.updateChart()
       // 启动图表切换定时器
@@ -168,10 +170,8 @@ export default {
         ],
       }
 
-      setTimeout(() => {
-        this.chartInstance.hideLoading()
-        this.chartInstance.setOption(dataOption)
-      }, 100)
+      this.chartInstance.hideLoading()
+      this.chartInstance.setOption(dataOption)
     },
     startInterval() {
       //清空之前定时器

@@ -7,7 +7,10 @@
     :style="headerStyle"
   >
     <el-col :span="7">
-      <el-button type="info" icon="el-icon-pie-chart" @click="toScreen"
+      <el-button
+        :type="screenButtonType"
+        icon="el-icon-pie-chart"
+        @click="toScreen"
         >可视化</el-button
       >
     </el-col>
@@ -21,7 +24,7 @@
           <el-button
             type="primary"
             icon="el-icon-s-custom"
-            @click="$router.push('/login')"
+            @click="$router.replace('/login')"
             >登录</el-button
           >
           <!-- <el-button
@@ -32,29 +35,41 @@
         </el-row>
       </div>
 
-      <el-row type="flex" justify="end" align="middle" v-show="user">
+      <el-row type="flex" justify="end" v-show="user">
         <!--头像及下拉菜单-->
 
-        <el-dropdown @command="dropdownRouter" placement="bottom" v-show="user">
+        <el-dropdown
+          @command="dropdownRouter"
+          placement="bottom"
+          style="
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            box-sizing: border-box;
+          "
+        >
           <el-avatar
             size="large"
             fit="fit"
             :src="circleUrl"
-            style="cursor: pointer"
+            style="cursor: pointer; margin: 0 auto; margin-top: 10px"
             @click.native="dropdownRouter('info')"
             ><i class="el-icon-arrow-down el-icon--right"></i>
           </el-avatar>
-
+          <span
+            style="
+              font-size: 18px;
+              font-weight: bold;
+              cursor: text;
+              color: #c0c4cc;
+            "
+          >
+            {{ user ? user.nickname : '' }}
+          </span>
           <el-dropdown-menu
             slot="dropdown"
             style="width: 143px; flex-direction: column"
           >
-            <span
-              style="font-size: 18px; font-weight: bold; cursor: text"
-              class="el-dropdown-menu__item"
-            >
-              {{ user ? user.nickname : '' }}
-            </span>
             <el-dropdown-item command="info"
               ><i
                 style="font-size: 18px; font-weight: bold"
@@ -84,27 +99,15 @@ export default {
   name: 'my-header',
   data() {
     return {
-      data: {
-        nickname: '新用户',
-      },
-      //是否显示头像
-      isShowAvatar: false,
-      isShowAuth: true,
       //头像默认图片地址
       circleUrl: require('../../../src/assets/img/avatar.png'),
-      bgUrl: require('../../../src/assets/img/1.jpg'),
-      titleStyle: {
-        color: 'white',
-        'font-size': '25px',
-        'text-align': 'center',
-        'font-family': '黑体',
-      },
+      // bgUrl: require('../../../src/assets/img/1.jpg'),
     }
   },
   methods: {
     toScreen() {
-      if (this.user != null) {
-        this.$router.push('/screen')
+      if (this.user !== null) {
+        this.$router.replace('/screen')
       } else {
         this.showMsg('您尚未登录', 'warning')
       }
@@ -115,18 +118,19 @@ export default {
         this.logout()
       } else if (command === 'info') {
         if (this.user && this.user.nickname) {
-          this.$router.push('/info/' + this.user.nickname)
+          this.$router.replace('/info/' + this.user.nickname)
         }
       } else {
-        this.$router.push('/' + command)
+        this.$router.replace('/' + command)
       }
     },
     async logout() {
       const { data } = await this.$http.get('auth/exit')
       if (data.code === 0) {
         this.showMsg('登出成功')
+        this.$store.commit('updateLogOut', true)
         this.$store.commit('clearUser')
-        this.$router.push('/login')
+        this.$router.replace('/login')
       }
     },
   },
@@ -147,7 +151,9 @@ export default {
         ? { backgroundColor: '#161522' }
         : {}
     },
-
+    screenButtonType() {
+      return this.$store.state.user === null ? 'info' : 'primary'
+    },
     ...mapState(['user']),
   },
   watch: {
@@ -158,7 +164,8 @@ export default {
 </script>
 
 <style lang='less' scoped>
-/**网络资源可视化标题样式 */
+// @import '../../assets/css/header.less';
+// 网络资源可视化标题样式
 .header-title {
   color: white;
   font-size: 25px;

@@ -1,7 +1,10 @@
 <template>
   <!-- <div class="screen-container">
     <div class="screen-body"> -->
-  <el-container class="screen-container">
+  <el-container
+    class="screen-container"
+    v-loading="!$store.getters.isChartLoading"
+  >
     <el-aside
       style="width: 40%; height: 100%; padding-right: 20px; position: relative"
     >
@@ -60,17 +63,23 @@
 </template>
 
 <script>
-import Hot from '../components/visual/hot.vue'
-import Map from '../components/visual/map2.vue'
-import Bar from '../components/visual/bar.vue'
+import Hot from './pie.vue'
+import Map from './map.vue'
+import Bar from './bar.vue'
 
-import Rank from '../components/visual/rank.vue'
-import Trend from '../components/visual/trend.vue'
+import Rank from './rank.vue'
+import Trend from './trend.vue'
 
 // import { getThemeValue } from '@/utils/theme_utils'
 export default {
   created() {
     // 注册接收到数据的回调函数
+    // const loading = this.$loading({
+    //   lock: true,
+    //   text: 'Loading',
+    //   spinner: 'el-icon-loading',
+    //   background: 'rgba(0, 0, 0, 0.7)',
+    // })
   },
   destroyed() {},
   data() {

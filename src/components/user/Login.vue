@@ -9,12 +9,14 @@
         ref="ruleForm"
         class="my-form"
         label-position="right"
+        @keyup.enter.native="submitForm('ruleForm')"
       >
         <div class="form-title">登录</div>
         <el-form-item prop="username">
           <el-input
             v-model="ruleForm.username"
-            placeholder="账号/邮箱"
+            placeholder="账号"
+            ref="username_input"
           ></el-input>
         </el-form-item>
 
@@ -117,24 +119,9 @@ export default {
       this.$refs[formName].validate((valid) => {
         if (valid) {
           this.loginRequest()
-
-          // this.isSubmitLoading = false
-          // const { data } = await this.$http.post(
-          //   'auth/login',
-          //   this.$http.adornData(this.ruleForm, false)
-          // )
-          // this.$message({
-          //   showClose: true,
-          //   message: data.msg,
-          //   type: data.code === 0 ? 'success' : 'error',
-          // })
-          // if (type === 'success') {
-          //   this.$store.commit('initUser', data.data)
-          //   this.$router.push('/screen')
           //   return true
           // }
         } else {
-          // this.isSubmitLoading = false
           // return false
         }
       })
@@ -160,7 +147,13 @@ export default {
 
       if (type === 'success') {
         this.$store.commit('initUser', data.data)
-        this.$router.push('/screen')
+
+        this.$store.commit('isLoginToScreen', true)
+        console.error(
+          'this.$store.state.loginToScreen :>> ',
+          this.$store.state.loginToScreen
+        )
+        this.$router.replace('/screen')
       }
       //请求完成，关闭加载动画
       this.isSubmitLoading = false
@@ -169,20 +162,12 @@ export default {
       this.$refs[formName].resetFields()
     },
   },
-  created() {
-    // this.$http({
-    //   url: 'auth/current',
-    //   method: 'get',
-    //   params: this.$http.adornParams({}),
-    // }).then(({ data }) => {
-    //   if (data.code === 0) {
-    //     this.$message({
-    //       showClose: true,
-    //       message: data.msg,
-    //     })
-    //     this.$router.push('/screen')
-    //   }
-    // })
+  created() {},
+  mounted() {
+    this.$refs['username_input'].focus()
+  },
+  deactivated() {
+    this.$refs['ruleForm'].resetFields()
   },
   //离开当前路由时调用
   // beforeRouteLeave(to, from, next) {
