@@ -4,6 +4,9 @@
 
 基于Vue+Element+ECharts实现network-detection前台系统前端功能
 
+![输入图片说明](https://images.gitee.com/uploads/images/2021/0529/192713_e16a5d9c_5036914.png "屏幕截图.png")
+![输入图片说明](https://images.gitee.com/uploads/images/2021/0529/195425_345467eb_5036914.png "屏幕截图.png")
+
 ## 项目结构 
 
 ```
