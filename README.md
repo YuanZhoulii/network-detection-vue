@@ -2,11 +2,7 @@
 
 ## 介绍
 
-网络资源探测前台系统前端项目
-
-## 相关技术
-
-Vue+Element+ECharts
+基于Vue+Element+ECharts实现network-detection前台系统前端功能
 
 ## 项目结构 
 
